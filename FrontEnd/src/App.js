@@ -6,10 +6,12 @@ class App extends Component {
     constructor(props){
         super(props);
         this.state = {
-            recorder: null
+            recorder: null,
+            recording: false
         };
         this.audioInput = React.createRef();
         this.download = React.createRef();
+        this.button = React.createRef();
     }
 
     componentDidMount(){
@@ -26,10 +28,6 @@ class App extends Component {
             // an audio blob available
             this.state.recorder.addEventListener('dataavailable', (e) => {this.onRecordingReady(e)});
         });
-    };
-
-    onStop = (blob) => {
-        console.log(blob);
     };
 
     startRecording(){
@@ -49,15 +47,32 @@ class App extends Component {
         audio.play();
     }
 
+    toggleRecordState(){
+        let button = this.button.current;
+        if(this.state.recording){
+            console.log("no longer recording");
+            this.setState({recording: false});
+            button.className = "red";
+            this.stopRecording();
+        }else{
+            console.log("recording");
+            this.setState({recording: true});
+            button.className = "green";
+            this.startRecording();
+        }
+    }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
-            <button onClick={() => {this.startRecording()}}>Start Recording</button>
-            <button onClick={() => {this.stopRecording()}}>Stop Recording</button>
-            <audio id="player" controls ref={this.audioInput}/>
-            <a href="#" ref={this.download}>Download</a>
+            <div className="navbar" />
         </header>
+          <div className="content">
+              <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
+              <audio id="player" controls ref={this.audioInput}/>
+              <a href="#" ref={this.download}>Download</a>
+          </div>
       </div>
     );
   }
