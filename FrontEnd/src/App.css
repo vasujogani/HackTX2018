@@ -51,6 +51,7 @@ button.green::after{
 button.red{
   border: 2px solid #fc5353;
   color: #fc5353;
+  animation: shadow-pulse 1s linear infinite;
 }
 
 button.red:hover{
@@ -60,4 +61,14 @@ button.red:hover{
 
 button.red::after{
   content: 'Recording';
+}
+
+@keyframes shadow-pulse
+{
+  0% {
+    box-shadow: 0 0 2px 0 rgba(252, 83, 83, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 2px 20px rgba(252, 83, 83, 0);
+  }
 }

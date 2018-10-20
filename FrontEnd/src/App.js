@@ -38,6 +38,7 @@ class App extends Component {
         this.state.recorder.stop();
     }
 
+    // When we have an audio 'blob' that we can use, we create a URL so that it can be used.
     onRecordingReady(e) {
         let audio = this.audioInput.current;
         // e.data contains a blob representing the recording
@@ -47,15 +48,14 @@ class App extends Component {
         audio.play();
     }
 
+    // This function toggles recording on/off, based on whether we're currently recording or not.
     toggleRecordState(){
         let button = this.button.current;
         if(this.state.recording){
-            console.log("no longer recording");
             this.setState({recording: false});
             button.className = "red";
             this.stopRecording();
         }else{
-            console.log("recording");
             this.setState({recording: true});
             button.className = "green";
             this.startRecording();
