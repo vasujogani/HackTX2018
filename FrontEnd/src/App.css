@@ -1,3 +1,8 @@
+body, html{
+  margin: 0;
+  padding: 0;
+}
+
 .content{
   display: flex;
   align-items: center;
@@ -72,3 +77,22 @@ button.red::after{
     box-shadow: 0 0 2px 20px rgba(252, 83, 83, 0);
   }
 }
+
+.navbar{
+  display: flex;
+  height: 60px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 100px;
+  border-bottom: 1px solid lightgrey;
+  box-shadow: 0 1px 2px lightgrey;
+}
+
+.navbar h1{
+  color: #888;
+  font-size: 15px;
+  line-height: 37px;
+  font-weight: 500;
+}
+
+
