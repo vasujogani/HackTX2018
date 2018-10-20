@@ -46,7 +46,7 @@ class LandingPage extends Component {
         const blobURL = URL.createObjectURL(e.data);
         audio.src = blobURL;
         this.download.current.href = blobURL;
-        this.sendRequest(blobURL);
+        this.sendRequest(e.data);
         audio.play();
     }
 
