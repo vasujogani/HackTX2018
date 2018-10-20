@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 import requests
 import os 
 import json
@@ -14,6 +14,21 @@ app = Flask(__name__)
 @app.route("/")
 def lit():
     return "LITTTTT! This is bad ass"
+
+@app.route("/find", methods=['GET', 'POST'])
+def find():
+    speech = request.files['speech']
+    files = {'media': 'voiceInputFromClient', speech, 'audio/mp3'}
+    r = requests.post(api, headers=headers, files=files)
+    r = json.loads(r.content)
+    
+    print(r)
+    if waitForTranscription(r['id']):
+        print("Waiting DONE!!!! " + str(rid))
+        return processTranscript(getTranscript(r['id']))
+
+    return "Waitin failed!"
+    
 
 @app.route("/sample/<int:rid>", methods=['GET'])
 def getJob(rid):
