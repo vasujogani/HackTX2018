@@ -22,10 +22,8 @@ def find():
         files = {'media': ('voiceInputFromClient.mp3', speech_bin, 'audio/mp3')}
         r = requests.post(api, headers=headers, files=files)
         r = json.loads(r.content)
-        print('added job........................')
         print(r)
         if waitForTranscription(r['id']):
-            print("Waiting DONE!!!! " + str(rid))
             return processTranscript(getTranscript(r['id']))
 
         return "Waitin failed!"
