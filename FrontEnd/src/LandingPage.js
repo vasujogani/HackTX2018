@@ -84,17 +84,18 @@ class LandingPage extends Component {
         req.send(form);
     }
 
-  render() {
-    return (
-      <div className="App">
-          <div className="content">
-              <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
-              <audio id="player" controls ref={this.audioInput}/>
-              <a href="#" ref={this.download}>Download</a>
-          </div>
-      </div>
-    );
-  }
+    render() {
+        return (
+        <div className="App">
+            <div className="content">
+                <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}
+                action="http://localhost:5000/find" method="post"/>
+                <audio id="player" controls ref={this.audioInput}/>
+                <a href="#" ref={this.download}>Download</a>
+            </div>
+        </div>
+        );
+    }
 }
 
 export default LandingPage;

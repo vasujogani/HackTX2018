@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS
 import requests
 import os 
 import json
@@ -10,6 +11,7 @@ headers = {'Authorization': 'Bearer 01VmSSrU2Aq9BPfkNQP-hyMJIS2XLbUGd9BIehO3mOX5
 speechFolder = 'SpeechFiles/'
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def lit():
@@ -23,7 +25,7 @@ def find():
 
         r = requests.post(api, headers=headers, files=files)
         r = json.loads(r.content)
-        print(r)
+        print("o shit waddup: " + str(r))
         if waitForTranscription(r['id']):
             return processTranscript(getTranscript(r['id']))
 
@@ -52,6 +54,7 @@ def getJob(rid):
 
 def processTranscript(transcript):
     res = []
+    print("PROCESS: " + str(transcript))
     for t in transcript['monologues'][0]['elements']:
         if t['type'] == 'text':
             res.append(t['value'])
@@ -63,11 +66,13 @@ def waitForTranscription(rid):
     url = api + "/" + str(rid)
     status = requests.get(url, headers = headers, params={'id': str(rid)})
     status = json.loads(status.content)
-    print(status)
+    print("we entering: " + str(status))
     # if str(status.status_code) == '200':
     while status['status'] == 'in_progress':
+        print("we in this bitch")
         status = requests.get(url, headers = headers, params={'id': str(rid)})
         status = json.loads(status.content)
+        print(status)
     return True
     # return False
 
