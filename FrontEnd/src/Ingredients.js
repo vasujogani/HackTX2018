@@ -22,7 +22,7 @@ class Ingredients extends Component {
     }
 
     componentDidMount(){
-        this.state.db.collection("ingredients").get().then( (querySnapshot) => {
+        this.state.db.collection("user_ingredients").get().then( (querySnapshot) => {
             querySnapshot.forEach( (doc) => {
                 this.state.ingredients.push(doc.id);
             })
@@ -79,19 +79,19 @@ class Ingredients extends Component {
         if(string){
             this.state.ingredients.push(string.trim());
             this.setState({ingredients: this.state.ingredients});
-            this.state.db.collection("ingredients").doc(string.trim()).set({});
+            this.state.db.collection("user_ingredients").doc(string.trim()).set({});
         }else{
             if(e.keyCode === 13 && e.target.value && e.target.value.trim()) {
                 this.state.ingredients.push(e.target.value.trim());
                 this.setState({ingredients: this.state.ingredients});
-                this.state.db.collection("ingredients").doc(e.target.value.trim()).set({});
+                this.state.db.collection("user_ingredients").doc(e.target.value.trim()).set({});
                 e.target.value = '';
             }
         }
     }
 
     deleteItem(e){
-        this.state.db.collection("ingredients").doc(e.target.innerHTML).delete();
+        this.state.db.collection("user_ingredients").doc(e.target.innerHTML).delete();
         let index = this.state.ingredients.indexOf(e.target.innerHTML);
         this.state.ingredients.splice(index, 1);
         this.setState({ingredients: this.state.ingredients});
