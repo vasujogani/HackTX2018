@@ -9,7 +9,7 @@ class LandingPage extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: '127.0.0.1:5000/find',
+            apiEndpoint: '/find',
             stream: null
         };
         this.audioInput = React.createRef();
@@ -57,7 +57,7 @@ class LandingPage extends Component {
         const blobURL = URL.createObjectURL(e.data);
         audio.src = blobURL;
         this.download.current.href = blobURL;
-        //this.sendRequest(e.data);
+        this.sendRequest(e.data);
         audio.play();
     }
 
