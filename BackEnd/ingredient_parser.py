@@ -79,9 +79,14 @@ def cleanIngredient(ing):
 
     return ing.strip()
 
+
 def find_recipes(speech_text):
 	# assume speech analysis gives tokenized words list
 	recipe_list = speech_analysis.analyze_text(speech_text)
+	return get_recipe_info(recipe_list)
+
+
+def get_recipe_info(recipe_list):
 	recipe_string = "+".join(recipe_list)
 	full_link = link_base + recipe_string + link_query_conditions
 
@@ -135,6 +140,9 @@ def find_recipes(speech_text):
 		for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 			for i in ingredient_list.findAll('li'):
 				ingredients.append(cleanIngredient(str(i.get_text())))
+
+		# ingredients is cleaned
+		print(ingredients)
 		recipe_dict["ingredients"] = ingredients
 
 		# recipe_dict = {
@@ -149,7 +157,7 @@ def find_recipes(speech_text):
 	return return_body
 
 
-# find_recipes("chicken parmesan")
+find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():

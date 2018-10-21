@@ -13,13 +13,22 @@ firebase_admin.initialize_app(cred, {
 
 db = firestore.client()
 
-def database():
-    return db
 
-docs = db.collection('common_ingredients').get()
+def user_inventory():
+	present = []
+	doc_ref = db.collection('user_ingredients').get()
+	for doc in doc_ref:
+		present.append(doc.id)
+	return present
 
 
-doc_ref = db.collection('common_ingredients').document('cumin')
+# def database():
+# 	return db
+
+# docs = db.collection('common_ingredients').get()
+# #
+#
+# doc_ref = db.collection('common_ingredients').document('cumin')
 
 # # try:
 # doc = doc_ref.get()
