@@ -229,10 +229,12 @@ button.red::after{
   flex: 1;
   text-align: center;
   margin: 20px;
+  font-size: 1rem;
 }
 
 .tri-item img{
   max-width: 100%;
+  width: 100%;
 }
 
 div.table-title {

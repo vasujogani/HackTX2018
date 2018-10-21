@@ -5,22 +5,16 @@ import RecipeCard from "./RecipeCard";
 
 class Dashboard extends Component {
 
-  componentDidMount(){
-    console.log(this.props.recipeList);
-  }
-
   render() {
     return (
       <div className="tri-flex">
-          <div className="tri-item">
-              <RecipeCard/>
-          </div>
-          <div className="tri-item">
-              <RecipeCard/>
-          </div>
-          <div className="tri-item">
-              <RecipeCard/>
-          </div>
+          {(this.props.recipeList ? this.props.recipeList.recipes : JSON.parse(localStorage.getItem('recipeData')).recipes).map( (item, index) => {
+              return(
+                  <div key={index} className="tri-item">
+                      <RecipeCard recipe={item}/>
+                  </div>
+              );
+          })}
       </div>
     );
   }
