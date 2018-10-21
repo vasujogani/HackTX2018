@@ -42,8 +42,10 @@ class RecipeCard extends Component {
                     {this.state.ingredients.map( (item, index) => {
                         return(
                             <tr key={index}>
-                                <td width="300px" className="text-center">{item}</td>
-                                <td className="text-center">&#10003;</td>
+                                <td width="300px" className="text-center">{item.name}</td>
+                                {item.available ?
+                                    <td className="text-center">&#10003;</td> :
+                                    <td className="text-center">&#10007;</td>}
                             </tr>
                         );
                     })}
