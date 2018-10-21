@@ -4,6 +4,7 @@ import database
 from bs4 import BeautifulSoup
 import re
 import FindRecipes
+import cost_analyzer
 from difflib import SequenceMatcher
 
 link = ''
@@ -171,6 +172,7 @@ def get_recipe_info(recipe_list):
 					cost += FindRecipes.findPrice(ing)
 
 		# ingredients is cleaned
+		# compare = cost_analyzer.analyze_cost(database.)
 		recipe_dict["ingredients"] = ingredients
 		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
 		
