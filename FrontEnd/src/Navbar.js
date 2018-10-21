@@ -14,7 +14,7 @@ class Navbar extends Component {
                         <h1 style={{cursor: "pointer"}} onClick={() => {window.location="/"}}>HackTX 2018</h1>
                     </div>
                      <div className="nav-right">
-                        <h1>Other stuff here?</h1>
+                        <h1 style={{cursor: "pointer"}} onClick={() => {window.location="/ingredients"}}>Add Ingredients</h1>
                      </div>
                 </div>
             </header>

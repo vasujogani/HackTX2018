@@ -20,6 +20,7 @@ def find():
     if request.method == 'POST':
         speech_bin = request.files['speech']
         files = {'media': ('voiceInputFromClient.mp3', speech_bin, 'audio/mp3')}
+
         r = requests.post(api, headers=headers, files=files)
         r = json.loads(r.content)
         print(r)
@@ -72,12 +73,10 @@ def waitForTranscription(rid):
 
 
 def getTranscript(rid):
-    url = api + "/{_id}/transcript".format(_id=rid);
+    url = api + "/{_id}/transcript".format(_id=rid)
     response = requests.get(url, headers = {'Accept': 'application/vnd.rev.transcript.v1.0+json', 'Authorization': headers['Authorization']}, params = {'id': str(rid)})
     response = json.loads(response.content)
     return response
-    
-
 
 def checkStatus(id):
     r = requests.post(api + '/' + id, headers=headers)

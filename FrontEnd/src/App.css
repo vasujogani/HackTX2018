@@ -3,16 +3,20 @@ body, html{
   padding: 0;
 }
 
-.content{
+.App{
+  margin-top: 400px;
+}
+
+.App .content{
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 400px;
 }
 
 .content *{
   justify-self: center;
   margin: 0 40px;
+  text-align: center;
 }
 
 button {
@@ -74,7 +78,7 @@ button.red::after{
     box-shadow: 0 0 2px 0 rgba(252, 83, 83, 0.2);
   }
   100% {
-    box-shadow: 0 0 2px 20px rgba(252, 83, 83, 0);
+    box-shadow: 0 0 2px 60px rgba(252, 83, 83, 0);
   }
 }
 
@@ -95,4 +99,98 @@ button.red::after{
   font-weight: 500;
 }
 
+.flex-container{
+  display: flex;
+  margin: auto;
+  justify-content: flex-start;
+  max-width: 65vw;
+  counter-reset: line-number;
+  flex-flow: row wrap;
+}
 
+.flex-item{
+  flex: 1 auto;
+  margin: 10px 20px;
+  min-width: 28%;
+  max-width: 28%;
+}
+
+.ingredient{
+  display: flex;
+  background-color: #1ECD97;
+  border-radius: 2px;
+  padding: 2px;
+  counter-increment: line-number;
+  position: relative;
+  color: black;
+  font-weight: 400;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 3px 1px #16936c;
+  transition: 0.1s all;
+}
+
+.ingredient:hover{
+  box-shadow: 3px 3px 10px 3px #16936c;
+  top: -1px;
+  left: -1px;
+}
+
+.ingredient::before{
+  content: counter(line-number)": ";
+  position: absolute;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 35px;
+  background-color: #16936c;
+  font-weight: bold;
+}
+
+.inputs{
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  align-items: center;
+  margin: 200px 0 150px 0;
+}
+
+.inputs * {
+  margin: 15px;
+}
+
+.inputs input{
+  padding: 14px;
+}
+
+.inputs input:focus{
+  outline: none;
+  animation: .4s shadow-pulse-green linear;
+}
+
+@keyframes shadow-pulse-green
+{
+  0% {
+    box-shadow: 0 0 10px 0 rgba(30, 205, 151, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px 20px rgba(30, 205, 151, 0);
+  }
+}
+
+.record{
+  height: 80vmin;
+  width: 80vmin;
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 50%;
+  font-size: 5rem;
+}
