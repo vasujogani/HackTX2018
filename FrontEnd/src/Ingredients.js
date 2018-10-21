@@ -18,7 +18,6 @@ class Ingredients extends Component {
             loaded: false,
             db: firebase.firestore()
         };
-        this.audioInput = React.createRef();
         this.button = React.createRef();
         this.input = React.createRef();
     }
@@ -32,27 +31,30 @@ class Ingredients extends Component {
             this.setState({loaded: true});
         });
         this.input.current.onkeyup = (e) => {this.addIngredient(e)};
-        // get audio stream from user's mic
-        navigator.mediaDevices.getUserMedia({
-            audio: true
-        }).then((stream) => {
-            this.setState({
-                recorder: new MediaRecorder(stream)
-            });
+        let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = new SpeechRecognition();
+        this.setState({recorder: recognition});
 
-            this.setState({speech: hark(stream, {})});
+        recognition.onspeechend = () => {
+            this.toggleRecordState();
+        };
 
-            this.state.speech.on('stopped_speaking', () => {
-                if(this.state.recording) {
-                    console.log('Stopped Speaking!');
-                    this.toggleRecordState();
-                }
-            });
+        recognition.onstart = () => {
+            console.log("started")
+        };
 
-            // listen to dataavailable, which gets triggered whenever we have
-            // an audio blob available
-            this.state.recorder.addEventListener('dataavailable', (e) => {this.onRecordingReady(e)});
-        });
+        recognition.onresult = (event) => {
+            // event is a SpeechRecognitionEvent object.
+            // It holds all the lines we have captured so far.
+            // We only need the current one.
+            let current = event.resultIndex;
+
+            // Get a transcript of what was said.
+            let transcript = event.results[current][0].transcript;
+
+            // Add the current transcript to the contents of our Note.
+            this.addIngredient(null, transcript);
+        };
     };
 
     startRecording(){
@@ -63,45 +65,29 @@ class Ingredients extends Component {
         this.state.recorder.stop();
     }
 
-    // When we have an audio 'blob' that we can use, we create a URL so that it can be used.
-    onRecordingReady(e) {
-        let audio = this.audioInput.current;
-        // e.data contains a blob representing the recording
-        const blobURL = URL.createObjectURL(e.data);
-        audio.src = blobURL;
-        //this.sendRequest(e.data);
-        audio.play();
-    }
-
     // This function toggles recording on/off, based on whether we're currently recording or not.
     toggleRecordState(){
         if(this.state.recording){
-            this.setState({recording: false});
             this.stopRecording();
+            this.setState({recording: false});
         }else{
-            this.setState({recording: true});
             this.startRecording();
+            this.setState({recording: true});
         }
     }
 
-    sendRequest(blob){
-        let req = new XMLHttpRequest();
-        let form = new FormData();
-        form.append("speech", blob);
-        req.open("POST", this.state.apiEndpoint, true);
-        req.onload = function (oEvent) {
-            console.log(oEvent);
-        };
-        console.log(form);
-        req.send(form);
-    }
-
-    addIngredient(e){
-        if(e.keyCode === 13 && e.target.value && e.target.value.trim()) {
-            this.state.ingredients.push(e.target.value.trim());
+    addIngredient(e, string){
+        if(string){
+            this.state.ingredients.push(string.trim());
             this.setState({ingredients: this.state.ingredients});
-            this.state.db.collection("ingredients").doc(e.target.value.trim()).set({});
-            e.target.value = '';
+            this.state.db.collection("ingredients").doc(string.trim()).set({});
+        }else{
+            if(e.keyCode === 13 && e.target.value && e.target.value.trim()) {
+                this.state.ingredients.push(e.target.value.trim());
+                this.setState({ingredients: this.state.ingredients});
+                this.state.db.collection("ingredients").doc(e.target.value.trim()).set({});
+                e.target.value = '';
+            }
         }
     }
 

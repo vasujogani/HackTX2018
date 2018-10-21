@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './App.css';
-import hark from 'hark';
 
 class LandingPage extends Component {
 
@@ -9,37 +8,35 @@ class LandingPage extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: 'http://127.0.0.1:5000/find',
+            apiEndpoint: 'http://127.0.0.1:5000/process',
             stream: null
         };
-        this.audioInput = React.createRef();
-        this.download = React.createRef();
         this.button = React.createRef();
     }
 
     componentDidMount(){
-        this.download.current.download = 'audio-TEST.mp3';
-        // get audio stream from user's mic
-        navigator.mediaDevices.getUserMedia({
-            audio: true
-        }).then((stream) => {
-            this.setState({
-                recorder: new MediaRecorder(stream)
-            });
+        let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognition = new SpeechRecognition();
+        this.setState({recorder: recognition});
 
-            this.setState({speech: hark(stream, {})});
+        recognition.onspeechend = () => {
+            this.toggleRecordState();
+        };
 
-            this.state.speech.on('stopped_speaking', () => {
-                if(this.state.recording) {
-                    console.log('Stopped Speaking!');
-                    this.toggleRecordState();
-                }
-            });
+        recognition.onresult = (event) => {
 
-            // listen to dataavailable, which gets triggered whenever we have
-            // an audio blob available
-            this.state.recorder.addEventListener('dataavailable', (e) => {this.onRecordingReady(e)});
-        });
+            // event is a SpeechRecognitionEvent object.
+            // It holds all the lines we have captured so far.
+            // We only need the current one.
+            let current = event.resultIndex;
+
+            // Get a transcript of what was said.
+            let transcript = event.results[current][0].transcript;
+
+            // Add the current transcript to the contents of our Note.
+            this.sendRequest(transcript);
+            console.log(transcript);
+        };
     };
 
     startRecording(){
@@ -50,31 +47,20 @@ class LandingPage extends Component {
         this.state.recorder.stop();
     }
 
-    // When we have an audio 'blob' that we can use, we create a URL so that it can be used.
-    onRecordingReady(e) {
-        let audio = this.audioInput.current;
-        // e.data contains a blob representing the recording
-        const blobURL = URL.createObjectURL(e.data);
-        audio.src = blobURL;
-        this.download.current.href = blobURL;
-        this.sendRequest(e.data);
-        audio.play();
-    }
-
     // This function toggles recording on/off, based on whether we're currently recording or not.
     toggleRecordState(){
         if(this.state.recording){
-            this.setState({recording: false});
             this.stopRecording();
+            this.setState({recording: false});
         }else{
-            this.setState({recording: true});
             this.startRecording();
+            this.setState({recording: true});
         }
     }
 
-    sendRequest(blob){
+    sendRequest(text){
         let form = new FormData();
-        form.append("speech", blob);
+        form.append("speech", text);
         fetch(this.state.apiEndpoint, {
             method: 'POST',
             body: form
@@ -88,8 +74,6 @@ class LandingPage extends Component {
       <div className="App">
           <div className="content">
               <button ref={this.button} className={this.state.recording ? "record red" : "record green"} onClick={() => {this.toggleRecordState()}}/>
-              <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
-              <a style={{display: "none"}} href="#" ref={this.download}>Download</a>
           </div>
       </div>
     );

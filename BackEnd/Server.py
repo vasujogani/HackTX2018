@@ -1,8 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
-import os 
+import os
 import json
+import ingredient_parser as ing_par
 
 # defining constants
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -16,6 +17,18 @@ CORS(app)
 @app.route("/")
 def lit():
     return "LITTTTT! This is bad ass"
+
+@app.route("/process", methods=['GET', 'POST'])
+def process():
+    if request.method == 'POST':
+        print("processing...")
+        speech_text = request.form.get('speech')
+        res = ing_par.find_recipes(speech_text)
+        print(res)
+        return jsonify(res)
+    else:
+        res = {'error': 'GET request made instead of POST for PROCESS'}
+        return jsonify(res)
 
 @app.route("/find", methods=['GET', 'POST'])
 def find():
@@ -33,12 +46,12 @@ def find():
             print('before x')
             x = processTranscript(getTranscript(r['id']))
             print('print x after this')
-            print(jsonify({'result': x}))
+            print(x)
             return jsonify({'result': x})
         print('waiting failedddd')
         return jsonify({'error': 'Processing failed!'})
     return jsonify({'error': 'ripppp'})
-    
+
 
 @app.route("/sample/<int:rid>", methods=['GET'])
 def getJob(rid):
