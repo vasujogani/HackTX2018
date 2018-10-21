@@ -15,14 +15,18 @@ url_headers = {
 def analyze_text(text):
     documents = {
         'documents': [
-            {'id': '1', 'language': 'en', 'text': "ingredient" + text}
+            {'id': '1', 'language': 'en', 'text': text}
         ]
     }
 
     resp = requests.post(base_url, json = documents, headers=url_headers)
     text_info = resp.json()
+    ret = []
     key_phrases = text_info["documents"][0]["keyPhrases"]
-    return key_phrases
+    for k in key_phrases:
+        for token in k.split():
+            ret.append(token)
+    return ret
 
 
 
