@@ -22,6 +22,7 @@ def lit():
 def process():
     if request.method == 'POST':
         speech_text = request.form.get('speech')
+        print('processing.....' + speech_text)
         res = ing_par.find_recipe(speech_text)
         print(res)
         return jsonify(res)
