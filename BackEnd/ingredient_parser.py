@@ -39,13 +39,15 @@ def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
 
 def findMatchHelper(a, b):
-	if similar(a, b) > 0.9:
+    a = a.lower()
+    b = b.lower()
+    if similar(a, b) > 0.9:
 		return True
 
 	for w in a.split(" "):
 		if w in b:
 			return True
-			
+
 	for w in b.split(" "):
 		if w in a:
 			return True
@@ -101,7 +103,7 @@ def cleanIngredient(ing):
 			r += w + ' '
 	ing = r
 
-	return ing.strip()
+	return ing.strip().lower()
 
 
 def find_recipes(speech_text):
@@ -173,13 +175,8 @@ def get_recipe_info(recipe_list):
 
 		# ingredients is cleaned
 		recipe_dict["ingredients"] = ingredients
-<<<<<<< HEAD
-		recipe_dict["missing_cost"] = cost
-
-=======
 		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
 
->>>>>>> 5b3cd3937ae33a0214c0b163bc31bdeddadd0be1
 
 		# recipe_dict = {
 		# 'id': rid
