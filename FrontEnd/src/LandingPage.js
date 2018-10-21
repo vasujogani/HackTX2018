@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import PropTypes from "prop-types";
 
 class LandingPage extends Component {
 
@@ -58,6 +59,10 @@ class LandingPage extends Component {
         }
     }
 
+    static contextTypes = {
+        router: PropTypes.object
+    };
+
     sendRequest(text){
         let form = new FormData();
         form.append("speech", text);
@@ -65,8 +70,10 @@ class LandingPage extends Component {
             method: 'POST',
             body: form
         }).then((response) => {return response.json()})
-            .then((data) => {console.log(data)})
-            .catch((error) => console.error('Error:', error));
+            .then((data) => {
+                this.props.updateRecipeList(data);
+                this.context.router.history.push('/dashboard');
+            }).catch((error) => console.error('Error:', error));
     }
 
   render() {
