@@ -3,7 +3,7 @@ import os
 
 # id = 1
 base_url = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases"
-access_token = "dc2e0d3467334491a4ea5a7f31916cb6"
+access_token = "dd9c62a6c2ee419badb6ec1101862acf"
 
 
 url_headers = {
