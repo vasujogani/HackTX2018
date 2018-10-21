@@ -3,16 +3,20 @@ body, html{
   padding: 0;
 }
 
-.content{
+.App{
+  margin-top: 400px;
+}
+
+.App .content{
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 400px;
 }
 
 .content *{
   justify-self: center;
   margin: 0 40px;
+  text-align: center;
 }
 
 button {
@@ -95,4 +99,46 @@ button.red::after{
   font-weight: 500;
 }
 
+.flex-container{
+  display: flex;
+  margin: auto;
+  justify-content: flex-start;
+  max-width: 65vw;
+  counter-reset: line-number;
+  flex-flow: row wrap;
+}
 
+.flex-item{
+  flex: 1 auto;
+  margin: 10px 20px;
+  min-width: 21%;
+  max-width: 33%;
+}
+
+.ingredient{
+  display: flex;
+  background-color: #1ECD97;
+  border-radius: 2px;
+  padding: 2px;
+  counter-increment: line-number;
+  position: relative;
+  color: black;
+  font-weight: 400;
+  height: 32px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ingredient::before{
+  content: counter(line-number)": ";
+  position: absolute;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 35px;
+  background-color: #16936c;
+  font-weight: bold;
+}

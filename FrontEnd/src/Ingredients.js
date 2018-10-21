@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import './App.css';
-import hark from 'hark';
+import hark from "hark";
+import firebase from 'firebase';
 
-class LandingPage extends Component {
+
+
+class Ingredients extends Component {
 
     constructor(props){
         super(props);
@@ -10,14 +13,26 @@ class LandingPage extends Component {
             recorder: null,
             recording: false,
             apiEndpoint: '127.0.0.1:5000/find',
-            stream: null
+            stream: null,
+            ingredients: [],
+            loaded: false,
+            db: firebase.firestore()
         };
         this.audioInput = React.createRef();
         this.download = React.createRef();
         this.button = React.createRef();
+        this.input = React.createRef();
     }
 
     componentDidMount(){
+        this.state.db.collection("ingredients").get().then( (querySnapshot) => {
+            querySnapshot.forEach( (doc) => {
+                this.state.ingredients.push(doc.id);
+            })
+        }).then( () => {
+            this.setState({loaded: true});
+        });
+        this.input.current.onkeyup = (e) => {this.addIngredient(e)};
         this.download.current.download = 'audio-TEST.mp3';
         // get audio stream from user's mic
         navigator.mediaDevices.getUserMedia({
@@ -84,17 +99,40 @@ class LandingPage extends Component {
         req.send(form);
     }
 
+    addIngredient(e){
+        if(e.keyCode === 13 && e.target.value && e.target.value.trim()) {
+            this.state.ingredients.push(e.target.value.trim());
+            this.setState({ingredients: this.state.ingredients});
+            this.state.db.collection("ingredients").doc(e.target.value.trim()).set({});
+            e.target.value = '';
+        }
+    }
+
+    deleteItem(e){
+        this.state.db.collection("ingredients").doc(e.target.innerHTML).delete();
+        let index = this.state.ingredients.indexOf(e.target.innerHTML);
+        this.state.ingredients.splice(index, 1);
+        this.setState({ingredients: this.state.ingredients});
+    }
+
   render() {
     return (
-      <div className="App">
-          <div className="content">
-              <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
-              <audio id="player" controls ref={this.audioInput}/>
-              <a href="#" ref={this.download}>Download</a>
-          </div>
-      </div>
+        <Fragment>
+            <input ref={this.input} type="text" placeholder="Enter an ingredient!" />
+            <div className="content">
+                <button style={{display: "none"}} ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
+                <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
+                <a style={{display: "none"}} href="#" ref={this.download}>Download</a>
+                <h1 className="ingredients-header">Your Current Ingredients</h1>
+                <div className="flex-container">
+                    {this.state.ingredients.map((item, index) => {
+                        return(<h2 key={index} className="flex-item ingredient" onClick={(e) => {this.deleteItem(e)}}>{item}</h2>);
+                    })}
+                </div>
+            </div>
+        </Fragment>
     );
   }
 }
 
-export default LandingPage;
+export default Ingredients;
