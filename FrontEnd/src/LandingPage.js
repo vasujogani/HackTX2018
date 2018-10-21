@@ -77,8 +77,7 @@ class LandingPage extends Component {
     }
 
     showLoading(){
-        if(this.button && this.button.current)
-            this.button.current.classList.add("onclick");
+        this.button.current.classList.add("onclick");
     }
 
   render() {
