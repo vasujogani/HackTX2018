@@ -43,14 +43,11 @@ def findMatchHelper(a, b):
     	return True
 
     for w in a.split(" "):
-    	if w in b:
-    		return True
-			
-	for w in b.split(" "):
-    	if w in a:
-    		return True
+        if w in b:
+            return True
 
 	return False
+
 
 def findMatch(a):
     for s in pantry:
@@ -174,7 +171,7 @@ def get_recipe_info(recipe_list):
 		print(ingredients)
 		recipe_dict["ingredients"] = ingredients
 		recipe_dict["missing_cost"] = cost
-		
+
 
 		# recipe_dict = {
 		# 'id': rid
@@ -188,7 +185,7 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-find_recipes("chicken parmesan")
+#find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():
