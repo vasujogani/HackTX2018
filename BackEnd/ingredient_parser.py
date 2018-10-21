@@ -1,5 +1,7 @@
 import requests
+import speech_analysis
 from bs4 import BeautifulSoup
+
 
 link = ''
 link_base = 'https://www.tasteofhome.com/search/index?search='
@@ -21,7 +23,7 @@ recipes_links = set()
 for r in recipes:
 	recipes_links.add(r['href'])
 
-recipe_ingreidents = dict()
+recipe_dict = dict()
 
 for link in recipes_links:
 	recipe_page = requests.get(link)
@@ -30,11 +32,14 @@ for link in recipes_links:
 	for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 		for i in ingredient_list.findAll('li'):
 			ingredients.append(i.get_text())
-	recipe_ingreidents[link] = ingredients
+	recipe_dict[link] = ingredients
 
-print(recipe_ingreidents)
+for i in recipe_dict.values():
+	print("This is the original unanalyzed shiiiittt\n\n")
+	for l in i:
+		print(l)
+	print("this is the analyzed key words\n\n")
+	for x in speech_analysis.analyze_text(str(i)):
+		print(x)
 
-
-	
-	
 
