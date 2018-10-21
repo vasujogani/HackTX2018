@@ -23,23 +23,24 @@ CORS(app)
 def lit():
     return "LITTTTT! This is bad ass"
 
-@app.route("/foodWithPantry", methods=['GET'])
+@app.route("/food", methods=['GET', 'POST'])
 def foodWithPantry():
-    
+    print('pantry')
     e = Edaman(nutrition_appid='32d74c57',
         nutrition_appkey='08367fc836fe9426bf2213e98f72127e',
         recipes_appid='d8236e65',
         recipes_appkey='dcdcda67cd3d123a9cdad0f2c7cda701	')
-    
+
     exists = database.user_inventory()
+    print(exists)
     s = ''
     for i in range(min(5, len(exists))):
         s+= exists[i] + ' '
-    
+
     result = e.search_recipe(s)
-    ind = random.randint(0,len(result))
-    
-    return ing_par.get_recipe_info(result.keys()[ind])
+    ind = random.randint(0,len(result)-1)
+    print(list(result.keys())[ind])
+    return jsonify(ing_par.get_recipe_info(list(result.keys())[0].split(' ')))
 
 
 @app.route("/process", methods=['GET', 'POST'])

@@ -26,14 +26,11 @@ def findPrice(product):
             except:
                 continue
     res.sort()
-<<<<<<< HEAD
-    res = res[int(len(res)*.03): int(len(res)*.24)]
-=======
     res = res[int(len(res)*.01): int(len(res)*.12)]
->>>>>>> 02e3dd094b24fbdee0fbbb03d923b65e0fec81d4
+
 
     if res:
         if sum(res)/len(res)> 20:
-            return sum(res)/len(res)%10    
+            return sum(res)/len(res)%10
         return sum(res)/len(res)
     return 0

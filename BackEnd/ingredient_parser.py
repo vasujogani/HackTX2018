@@ -45,7 +45,7 @@ def findMatchHelper(a, b):
 	if similar(a, b) > 0.9:
 		return True
 
-	for w in a.split(' '):
+	for w in a.split(" "):
 		if w in b:
 			return True
 
@@ -58,7 +58,6 @@ def findMatchHelper(a, b):
 
 def findMatch(a):
 	for s in exists:
-    		print(str(s) + ' xx  ' + str(a) + ' ==> ' + str(findMatchHelper(s,a)))
 		if findMatchHelper(s, a):
 			return True
 	return False
@@ -115,7 +114,6 @@ def find_recipes(speech_text):
 
 
 def get_recipe_info(recipe_list):
-    	print(recipe_list)
 	recipe_string = "+".join(recipe_list)
 	full_link = link_base + recipe_string + link_query_conditions
 
@@ -181,7 +179,6 @@ def get_recipe_info(recipe_list):
 		# ingredients is cleaned
 		recipe_dict["ingredients"] = ingredients
 		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
-		
 		recipe_dict["comparison_cost"] = compare
 		# print("comparison of prices bitkajslkfjls: " + repr(cost) + "act   comp" + repr(compare))
 
@@ -197,8 +194,7 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-# find_recipes("halloween recipe")
-print(FindRecipes.findPrice('milk'))
+#find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():
