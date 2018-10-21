@@ -3,12 +3,14 @@ import speech_analysis
 import database
 from bs4 import BeautifulSoup
 import re
-
+import FindReceipes as find_rec
+from difflib import SequenceMatcher
 
 db = database.database()
 link = ''
 link_base = 'https://www.tasteofhome.com/search/index?search='
 link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
+exists = []
 # recipe_list = ["chicken", "tikka", "masala"]
 # recipe_list get from rev ai
 
@@ -40,6 +42,28 @@ def user_inventory(ingredients):
 	# 	if db.collection('common_ingredients').document(token)
 	return present
 
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+def findMatchHelper(a, b):
+    if similar(a, b) > 0.9:
+    	return True
+
+    for w in a.split(" "):
+    	if w in b:
+    		return True
+			
+	for w in b.split(" "):
+    	if w in a:
+    		return True
+
+	return False
+
+def findMatch(a):
+    for s in pantry:
+    	if findMatchHelper(s, a):
+    		return True
+	return False
 
 def cleanIngredient(ing):
     ing = ''.join([i for i in ing if not i.isdigit()])
@@ -143,13 +167,21 @@ def get_recipe_info(recipe_list):
 			recipe_dict["img_src"] = ""
 
 		ingredients = list()
+		cost = 0
 		for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 			for i in ingredient_list.findAll('li'):
-				ingredients.append(cleanIngredient(str(i.get_text())))
+				ing = cleanIngredient(str(i.get_text()))
+				if findMatch(ing):
+    				ingredients.append({'name': ing, 'available': True})
+				else:
+					ingredients.append({'name': ing, 'available': False})
+					cost += find_rec.findPrice(ing)
 
 		# ingredients is cleaned
 		print(ingredients)
 		recipe_dict["ingredients"] = ingredients
+		recipe_dict["missing_cost"] = cost
+		
 
 		# recipe_dict = {
 		# 'id': rid

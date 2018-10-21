@@ -55,9 +55,13 @@ e = Edaman(nutrition_appid='32d74c57',
            nutrition_appkey='08367fc836fe9426bf2213e98f72127e',
            recipes_appid='d8236e65',
            recipes_appkey='dcdcda67cd3d123a9cdad0f2c7cda701	')
-
+# exists = getInventory()
 # print e.search_nutrient("1 large pepporini pizza")
-result = e.search_recipe("bread crumbs mustard chicken breast cheese")
+s = ''
+for i in range(min(5, len(exists))):
+    s+= exists[i] + ' '
+result = e.search_recipe(s)
+
 
 # print(result)
 # for k in result:

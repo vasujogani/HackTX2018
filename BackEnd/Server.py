@@ -4,12 +4,17 @@ import requests
 import os
 import json
 import ingredient_parser as ing_par
+from py_edamam import Edaman
+import database
+import random
+
 
 # defining constants
 dir_path = os.path.dirname(os.path.realpath(__file__))
 api = 'https://api.rev.ai/revspeech/v1beta/jobs'
 headers = {'Authorization': 'Bearer 01VmSSrU2Aq9BPfkNQP-hyMJIS2XLbUGd9BIehO3mOX562Ujei7618lpRzu4G0EZMvUpcq4Bf4AKzYA2c7WWo2zlPLcEc'}
 speechFolder = 'SpeechFiles/'
+exists = []
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +22,24 @@ CORS(app)
 @app.route("/")
 def lit():
     return "LITTTTT! This is bad ass"
+
+@app.route("/foodWithPantry", methods=['GET'])
+def foodWithPantry():
+    
+    e = Edaman(nutrition_appid='32d74c57',
+        nutrition_appkey='08367fc836fe9426bf2213e98f72127e',
+        recipes_appid='d8236e65',
+        recipes_appkey='dcdcda67cd3d123a9cdad0f2c7cda701	')
+
+    s = ''
+    for i in range(min(5, len(exists))):
+        s+= exists[i] + ' '
+    
+    result = e.search_recipe(s)
+    ind = random.randint(0,len(result))
+    
+    return ing_par.get_recipe_info(result.keys()[ind])
+
 
 @app.route("/process", methods=['GET', 'POST'])
 def process():
