@@ -37,7 +37,7 @@ class RecipeCard extends Component {
                 <tbody className="table-hover">
                     <tr>
                         <td width="300px" className="text-center" style={{fontWeight: "bold"}}>Cost of Missing Items: </td>
-                        <td className="text-center" style={{fontWeight: "bolder"}}>${this.state.price}</td>
+                        <td className="text-center" style={{fontWeight: "bolder"}}>${(this.state.price / 6).toFixed(2)}/serving</td>
                     </tr>
                     {this.state.ingredients.map( (item, index) => {
                         return(

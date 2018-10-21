@@ -13,6 +13,7 @@ class LandingPage extends Component {
             stream: null
         };
         this.button = React.createRef();
+        this.preview = React.createRef();
     }
 
     componentDidMount(){
@@ -22,6 +23,7 @@ class LandingPage extends Component {
 
         recognition.onspeechend = () => {
             this.toggleRecordState();
+            this.showLoading();
         };
 
         recognition.onresult = (event) => {
@@ -33,7 +35,7 @@ class LandingPage extends Component {
 
             // Get a transcript of what was said.
             let transcript = event.results[current][0].transcript;
-            this.showLoading();
+            this.preview.current.innerHTML = "Searching for \"" + transcript + "\"...";
             // Add the current transcript to the contents of our Note.
             this.sendRequest(transcript);
             console.log(transcript);
@@ -78,6 +80,7 @@ class LandingPage extends Component {
 
     showLoading(){
         this.button.current.classList.add("onclick");
+        this.preview.current.classList.add("visible");
     }
 
   render() {
@@ -85,6 +88,7 @@ class LandingPage extends Component {
       <div className="App">
           <div className="content">
               <button ref={this.button} className={this.state.recording ? "record red" : "record green"} onClick={() => {this.toggleRecordState()}}/>
+              <h1 ref={this.preview} className="preview" />
           </div>
       </div>
     );
