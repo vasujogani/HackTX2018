@@ -8,7 +8,7 @@ class LandingPage extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: 'http://127.0.0.1:5000/find',
+            apiEndpoint: 'http://127.0.0.1:5000/process',
             stream: null
         };
         this.button = React.createRef();
@@ -50,11 +50,11 @@ class LandingPage extends Component {
     // This function toggles recording on/off, based on whether we're currently recording or not.
     toggleRecordState(){
         if(this.state.recording){
-            this.setState({recording: false});
             this.stopRecording();
+            this.setState({recording: false});
         }else{
-            this.setState({recording: true});
             this.startRecording();
+            this.setState({recording: true});
         }
     }
 
