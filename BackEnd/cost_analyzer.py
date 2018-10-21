@@ -1,6 +1,3 @@
-import requests
-from bs4 import BeautifulSoup
-
 def analyze_cost(missing_items):
 	item_costs = dict(list([
 		  ['milk', 0.20],
