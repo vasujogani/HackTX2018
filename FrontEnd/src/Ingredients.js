@@ -68,11 +68,11 @@ class Ingredients extends Component {
     // This function toggles recording on/off, based on whether we're currently recording or not.
     toggleRecordState(){
         if(this.state.recording){
-            this.setState({recording: false});
             this.stopRecording();
+            this.setState({recording: false});
         }else{
-            this.setState({recording: true});
             this.startRecording();
+            this.setState({recording: true});
         }
     }
 
