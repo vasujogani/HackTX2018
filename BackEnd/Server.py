@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import requests
 import os 
@@ -19,6 +19,8 @@ def lit():
 
 @app.route("/find", methods=['GET', 'POST'])
 def find():
+    # if request.method == 'POST':
+    #     return jsonify({'test': 'does it work'})
     if request.method == 'POST':
         print('finding...')
         speech_bin = request.files['speech']
@@ -28,12 +30,14 @@ def find():
         r = json.loads(r.content)
         print("o shit waddup: " + str(r))
         if waitForTranscription(r['id']):
+            print('before x')
             x = processTranscript(getTranscript(r['id']))
-            print(x)
-            return {'result': x}
-
-        return {'error': "Waitin failed!"}
-    return {'error': 'ripppp'}
+            print('print x after this')
+            print(jsonify({'result': x}))
+            return jsonify({'result': x})
+        print('waiting failedddd')
+        return jsonify({'error': 'Waitin failed!'})
+    return jsonify({'error': 'ripppp'})
     
 
 @app.route("/sample/<int:rid>", methods=['GET'])
@@ -59,6 +63,8 @@ def getJob(rid):
 def processTranscript(transcript):
     res = []
     print("PROCESS: " + str(transcript))
+    if len(transcript['monologues']) == 0:
+        return 'FAILED'
     for t in transcript['monologues'][0]['elements']:
         if t['type'] == 'text':
             res.append(t['value'])
@@ -76,7 +82,7 @@ def waitForTranscription(rid):
         print("we in this bitch")
         status = requests.get(url, headers = headers, params={'id': str(rid)})
         status = json.loads(status.content)
-        
+    print(status['status'])
     if status['status'] == 'transcribed':
         return True
     return False
