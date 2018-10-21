@@ -5,6 +5,10 @@ import RecipeCard from "./RecipeCard";
 
 class Dashboard extends Component {
 
+  componentDidMount(){
+    console.log(this.props.recipeList);
+  }
+
   render() {
     return (
       <div className="tri-flex">
