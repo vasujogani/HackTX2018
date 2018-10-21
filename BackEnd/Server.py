@@ -20,6 +20,7 @@ def lit():
 @app.route("/find", methods=['GET', 'POST'])
 def find():
     if request.method == 'POST':
+        print('finding...')
         speech_bin = request.files['speech']
         files = {'media': ('voiceInputFromClient.mp3', speech_bin, 'audio/mp3')}
 
@@ -27,10 +28,12 @@ def find():
         r = json.loads(r.content)
         print("o shit waddup: " + str(r))
         if waitForTranscription(r['id']):
-            return processTranscript(getTranscript(r['id']))
+            x = processTranscript(getTranscript(r['id']))
+            print(x)
+            return {'result': x}
 
-        return "Waitin failed!"
-    return "ripppp"
+        return {'error': "Waitin failed!"}
+    return {'error': 'ripppp'}
     
 
 @app.route("/sample/<int:rid>", methods=['GET'])
@@ -48,9 +51,10 @@ def getJob(rid):
         print(r)
         if waitForTranscription(r['id']):
             print("Waiting DONE!!!! " + str(rid))
-            return processTranscript(getTranscript(r['id']))
+            x = processTranscript(getTranscript(r['id']))
+            return {'result': x}
 
-        return "Waitin failed!"
+        return "Processing Failed!"
 
 def processTranscript(transcript):
     res = []
@@ -72,8 +76,10 @@ def waitForTranscription(rid):
         print("we in this bitch")
         status = requests.get(url, headers = headers, params={'id': str(rid)})
         status = json.loads(status.content)
-        print(status)
-    return True
+        
+    if status['status'] == 'transcribed':
+        return True
+    return False
     # return False
 
 
