@@ -33,12 +33,6 @@ link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
 #
 #
 # #}
-def user_inventory(ingredients):
-	present = []
-
-	# for ing in ingredients:
-	# 	if db.collection('common_ingredients').document(token)
-	return present
 
 
 def cleanIngredient(ing):
@@ -163,7 +157,7 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-# find_recipes("chicken parmesan")
+find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():
