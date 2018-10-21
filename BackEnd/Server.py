@@ -36,7 +36,7 @@ def find():
             print(jsonify({'result': x}))
             return jsonify({'result': x})
         print('waiting failedddd')
-        return jsonify({'error': 'Waitin failed!'})
+        return jsonify({'error': 'Processing failed!'})
     return jsonify({'error': 'ripppp'})
     
 
@@ -64,7 +64,7 @@ def processTranscript(transcript):
     res = []
     print("PROCESS: " + str(transcript))
     if len(transcript['monologues']) == 0:
-        return 'FAILED'
+        return 'Could not process (processTranscript)'
     for t in transcript['monologues'][0]['elements']:
         if t['type'] == 'text':
             res.append(t['value'])
