@@ -76,11 +76,11 @@ class LandingPage extends Component {
         let form = new FormData();
         form.append("speech", blob);
         fetch(this.state.apiEndpoint, {
-            method: 'PUT',
+            method: 'POST',
             body: form
-        }).then((response) => response.json())
-            .catch((error) => console.error('Error:', error))
-            .then((response) => console.log('Success:', JSON.stringify(response)));
+        }).then((response) => {return response.json()})
+            .then((data) => {console.log(data)})
+            .catch((error) => console.error('Error:', error));
     }
 
   render() {

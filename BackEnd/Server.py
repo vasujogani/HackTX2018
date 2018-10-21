@@ -1,4 +1,5 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import requests
 import os 
 import json
@@ -10,6 +11,7 @@ headers = {'Authorization': 'Bearer 01VmSSrU2Aq9BPfkNQP-hyMJIS2XLbUGd9BIehO3mOX5
 speechFolder = 'SpeechFiles/'
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/")
 def lit():
@@ -17,18 +19,25 @@ def lit():
 
 @app.route("/find", methods=['GET', 'POST'])
 def find():
+    # if request.method == 'POST':
+    #     return jsonify({'test': 'does it work'})
     if request.method == 'POST':
+        print('finding...')
         speech_bin = request.files['speech']
         files = {'media': ('voiceInputFromClient.mp3', speech_bin, 'audio/mp3')}
 
         r = requests.post(api, headers=headers, files=files)
         r = json.loads(r.content)
-        print(r)
+        print("o shit waddup: " + str(r))
         if waitForTranscription(r['id']):
-            return processTranscript(getTranscript(r['id']))
-
-        return "Waitin failed!"
-    return "ripppp"
+            print('before x')
+            x = processTranscript(getTranscript(r['id']))
+            print('print x after this')
+            print(jsonify({'result': x}))
+            return jsonify({'result': x})
+        print('waiting failedddd')
+        return jsonify({'error': 'Processing failed!'})
+    return jsonify({'error': 'ripppp'})
     
 
 @app.route("/sample/<int:rid>", methods=['GET'])
@@ -46,12 +55,16 @@ def getJob(rid):
         print(r)
         if waitForTranscription(r['id']):
             print("Waiting DONE!!!! " + str(rid))
-            return processTranscript(getTranscript(r['id']))
+            x = processTranscript(getTranscript(r['id']))
+            return {'result': x}
 
-        return "Waitin failed!"
+        return "Processing Failed!"
 
 def processTranscript(transcript):
     res = []
+    print("PROCESS: " + str(transcript))
+    if len(transcript['monologues']) == 0:
+        return 'Could not process (processTranscript)'
     for t in transcript['monologues'][0]['elements']:
         if t['type'] == 'text':
             res.append(t['value'])
@@ -63,12 +76,16 @@ def waitForTranscription(rid):
     url = api + "/" + str(rid)
     status = requests.get(url, headers = headers, params={'id': str(rid)})
     status = json.loads(status.content)
-    print(status)
+    print("we entering: " + str(status))
     # if str(status.status_code) == '200':
     while status['status'] == 'in_progress':
+        print("we in this bitch")
         status = requests.get(url, headers = headers, params={'id': str(rid)})
         status = json.loads(status.content)
-    return True
+    print(status['status'])
+    if status['status'] == 'transcribed':
+        return True
+    return False
     # return False
 
 
