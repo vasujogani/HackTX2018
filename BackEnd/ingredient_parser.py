@@ -4,6 +4,7 @@ import database
 from bs4 import BeautifulSoup
 import re
 import FindRecipes
+import cost_analyzer
 from difflib import SequenceMatcher
 
 link = ''
@@ -39,21 +40,25 @@ def similar(a, b):
 	return SequenceMatcher(None, a, b).ratio()
 
 def findMatchHelper(a, b):
+	a = a.lower()
+	b = b.lower()
 	if similar(a, b) > 0.9:
 		return True
 
 	for w in a.split(' '):
 		if w in b:
 			return True
-			
-	for w in b.split(' '):
+
+	for w in b.split(" "):
 		if w in a:
 			return True
 
 	return False
 
+
 def findMatch(a):
 	for s in exists:
+    		print(str(s) + ' xx  ' + str(a) + ' ==> ' + str(findMatchHelper(s,a)))
 		if findMatchHelper(s, a):
 			return True
 	return False
@@ -100,7 +105,7 @@ def cleanIngredient(ing):
 			r += w + ' '
 	ing = r
 
-	return ing.strip()
+	return ing.strip().lower()
 
 
 def find_recipes(speech_text):
@@ -110,6 +115,7 @@ def find_recipes(speech_text):
 
 
 def get_recipe_info(recipe_list):
+    	print(recipe_list)
 	recipe_string = "+".join(recipe_list)
 	full_link = link_base + recipe_string + link_query_conditions
 
@@ -161,6 +167,7 @@ def get_recipe_info(recipe_list):
 
 		ingredients = list()
 		cost = 0
+		compare = 0
 		for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 			for i in ingredient_list.findAll('li'):
 				ing = cleanIngredient(str(i.get_text()))
@@ -168,12 +175,15 @@ def get_recipe_info(recipe_list):
 					ingredients.append({'name': ing, 'available': True})
 				else:
 					ingredients.append({'name': ing, 'available': False})
-					cost += findPrice(ing)
+					cost += FindRecipes.findPrice(ing)
+					compare += cost_analyzer.analyze_cost(ing)
 
 		# ingredients is cleaned
 		recipe_dict["ingredients"] = ingredients
 		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
 		
+		recipe_dict["comparison_cost"] = compare
+		# print("comparison of prices bitkajslkfjls: " + repr(cost) + "act   comp" + repr(compare))
 
 		# recipe_dict = {
 		# 'id': rid
@@ -187,7 +197,8 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-# find_recipes("chicken parmesan")
+# find_recipes("halloween recipe")
+print(FindRecipes.findPrice('milk'))
 
 
 	# for ingred in recipe_dict.values():
