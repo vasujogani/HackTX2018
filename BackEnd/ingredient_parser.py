@@ -6,11 +6,10 @@ import re
 import FindReceipes as find_rec
 from difflib import SequenceMatcher
 
-db = database.database()
 link = ''
 link_base = 'https://www.tasteofhome.com/search/index?search='
 link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
-exists = []
+exists = database.user_inventory()
 # recipe_list = ["chicken", "tikka", "masala"]
 # recipe_list get from rev ai
 
