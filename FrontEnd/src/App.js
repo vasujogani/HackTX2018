@@ -26,6 +26,7 @@ class App extends Component {
     }
 
     updateRecipeList(data){
+        localStorage.setItem("recipeData", JSON.stringify(data));
         this.setState({
             recipeList: data
         });

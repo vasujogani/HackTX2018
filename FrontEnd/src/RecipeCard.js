@@ -3,39 +3,38 @@ import './App.css';
 
 class RecipeCard extends Component {
 
+    constructor(props){
+        super(props);
+        if(this.props.recipe){
+            this.state = {
+                title: this.props.recipe.title,
+                img_src: this.props.recipe.img_src,
+                ingredients: this.props.recipe.ingredients
+            }
+        }
+    }
+
   render() {
-    return (
+      return (
         <Fragment>
-            <img src="https://www.tasteofhome.com/wp-content/uploads/2017/10/Meat-Loaf-Muffins_EXPS_SDFM17_11393_B10_07_5b-1-1024x1024.jpg" />
-            <h1>Food 1</h1>
+            <img src={this.state.img_src} />
+            <h1>{this.state.title}</h1>
             <table className="table-fill">
                 <thead>
-                <tr>
-                    <th className="text-center">Ingredient</th>
-                    <th className="text-center">Do I Have It?</th>
-                </tr>
-                </thead>
-                <tbody className="table-hover">
-                <tr>
-                    <td className="text-center">January</td>
-                    <td className="text-center">&#10003;</td>
-                </tr>
-                <tr>
-                    <td className="text-center">February</td>
-                    <td className="text-center">&#10007;</td>
-                </tr>
-                <tr>
-                    <td className="text-center">March</td>
-                    <td className="text-center">&#10007;</td>
-                </tr>
-                <tr>
-                    <td className="text-center">April</td>
-                    <td className="text-center">&#10003;</td>
-                </tr>
-                <tr>
-                    <td className="text-center">May</td>
-                    <td className="text-center">&#10003;</td>
-                </tr>
+                    <tr>
+                        <th className="text-center">Ingredient</th>
+                        <th className="text-center">Do I Have It?</th>
+                    </tr>
+                    </thead>
+                    <tbody className="table-hover">
+                    {this.state.ingredients.map( (item, index) => {
+                        return(
+                            <tr key={index}>
+                                <td width="180px" className="text-center">{item}</td>
+                                <td className="text-center">&#10003;</td>
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </Fragment>
