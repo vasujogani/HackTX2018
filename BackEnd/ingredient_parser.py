@@ -1,10 +1,10 @@
 import requests
 import speech_analysis
-import dict_parser
+import database
 from bs4 import BeautifulSoup
 
 
-db = dict_parser.database()
+db = database.database()
 link = ''
 link_base = 'https://www.tasteofhome.com/search/index?search='
 link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
@@ -17,7 +17,20 @@ link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
 # 		{recipe1},
 # 		{recipe2},
 #       {recipe3}
-# 	]
+# 	],
+#
+#   "current_ingredients": [
+#       {curr recipe1},
+#       {curr recipe2},
+#       {curr recipe3},
+#   ]
+#
+#       {curr recipe1},
+#       {curr recipe1},
+#       {curr recipe1},
+#
+#
+#
 # #}
 def find_recipes(speech_text):
 	# assume speech analysis gives tokenized words list
@@ -38,7 +51,6 @@ def find_recipes(speech_text):
 		recipes_links.add(r['href'])
 
 
-	metadata = {}
 	# this is the wrapper around the whole return
 	return_body = {}
 	return_list = []
@@ -62,15 +74,20 @@ def find_recipes(speech_text):
 		title = recipe_soup.find('meta', {"property": "og:title"})
 		if title is not None and title["content"] is not None:
 			#print(title["content"].get_text())
-			print(title["content"])
 			recipe_dict["title"] = str(title["content"])
 		else:
 			recipe_dict["title"] = ""
 
 		img_div = recipe_soup.find('div', {"class": "recipe-image-and-meta-sidebar__featured-container"})
+<<<<<<< HEAD
+		img_container = None
+		if img_div is not None:
+			img_container = img_div.find("img", recursive=False)
+
+=======
 		img_container = img_div.find("img", recursive=False) if img_div else None
+>>>>>>> 421b2eb9a4e3ea22899b32c844880b8eb744912c
 		if img_container is not None and img_container["src"] is not None:
-			print(img_container["src"])
 			recipe_dict["img_src"] = str(img_container["src"])
 		else:
 			recipe_dict["img_src"] = ""
@@ -86,11 +103,11 @@ def find_recipes(speech_text):
 		# 'link': rec link
 		# 'title': rec title,
 		# 'img src': img src link,
-		# 'ingredients': recipe ingredients
+		# 'ingredients': list recipe ingredients
 		return_list.append(recipe_dict)
 
 	return_body["recipes"] = return_list
-	print(return_body)
+	# print(return_body)
 	return return_body
 
 find_recipes("chicken parmesan")
