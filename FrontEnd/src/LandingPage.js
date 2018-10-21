@@ -9,7 +9,7 @@ class LandingPage extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: '/find',
+            apiEndpoint: '127.0.0.1/find',
             stream: null
         };
         this.audioInput = React.createRef();
