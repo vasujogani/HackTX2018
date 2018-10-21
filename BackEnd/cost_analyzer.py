@@ -16,6 +16,7 @@ def analyze_cost(missing_item):
           ['lettuce', 0.26],
           ['flour', 0.47],
           ['spaghetti', 0.80],
+          ['linguini', 0.80],
           ['macaroni', 0.80],
           ['pork', 1.80],
           ['bacon', 0.25],
@@ -27,6 +28,13 @@ def analyze_cost(missing_item):
           ['strawberries', 1.17],
           ['broccoli', 0.85],
           ['sugar', 0.12],
+          ['oil', 0.10],
+          ['salt', 0.15],
+          ['mushroom', 0.95],
+          ['broth', 0.55],
+          ['basil', 0.25],
+          ['pepper', 0.15],
+          ['sauce', 0.45]
           ]))
 
 
