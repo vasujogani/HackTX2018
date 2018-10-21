@@ -33,7 +33,7 @@ class LandingPage extends Component {
 
             // Get a transcript of what was said.
             let transcript = event.results[current][0].transcript;
-
+            this.showLoading();
             // Add the current transcript to the contents of our Note.
             this.sendRequest(transcript);
             console.log(transcript);
@@ -74,6 +74,11 @@ class LandingPage extends Component {
                 this.props.updateRecipeList(data);
                 this.context.router.history.push('/dashboard');
             }).catch((error) => console.error('Error:', error));
+    }
+
+    showLoading(){
+        if(this.button && this.button.current)
+            this.button.current.classList.add("onclick");
     }
 
   render() {
