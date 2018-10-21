@@ -39,7 +39,6 @@ def analyze_cost(missing_item):
 
 	return 0.0
 
-print(analyze_cost('chicken thighs'))
 
 
 

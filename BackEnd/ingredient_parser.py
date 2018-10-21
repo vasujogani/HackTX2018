@@ -162,6 +162,7 @@ def get_recipe_info(recipe_list):
 
 		ingredients = list()
 		cost = 0
+		compare = 0
 		for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 			for i in ingredient_list.findAll('li'):
 				ing = cleanIngredient(str(i.get_text()))
@@ -170,11 +171,13 @@ def get_recipe_info(recipe_list):
 				else:
 					ingredients.append({'name': ing, 'available': False})
 					cost += FindRecipes.findPrice(ing)
+					compare += cost_analyzer.analyze_cost(ing)
 
 		# ingredients is cleaned
-		# compare = cost_analyzer.analyze_cost(database.)
 		recipe_dict["ingredients"] = ingredients
 		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
+		recipe_dict["comparison_cost"] = compare
+		print("comparison of prices bitkajslkfjls: " + repr(cost) + "act   comp" + repr(compare))
 		
 
 		# recipe_dict = {
