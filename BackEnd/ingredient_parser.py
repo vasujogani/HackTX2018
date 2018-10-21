@@ -35,12 +35,6 @@ exists = []
 #
 #
 # #}
-def user_inventory(ingredients):
-	present = []
-
-	# for ing in ingredients:
-	# 	if db.collection('common_ingredients').document(token)
-	return present
 
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
@@ -195,7 +189,7 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-# find_recipes("chicken parmesan")
+find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():
