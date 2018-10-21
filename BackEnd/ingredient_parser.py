@@ -2,6 +2,7 @@ import requests
 import speech_analysis
 import database
 from bs4 import BeautifulSoup
+import re
 
 
 db = database.database()
