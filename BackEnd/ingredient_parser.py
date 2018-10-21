@@ -50,7 +50,6 @@ def find_recipes(speech_text):
 	for r in recipes:
 		recipes_links.add(r['href'])
 
-
 	# this is the wrapper around the whole return
 	return_body = {}
 	return_list = []
@@ -70,16 +69,16 @@ def find_recipes(speech_text):
 		recipe_page = requests.get(link)
 		recipe_soup = BeautifulSoup(recipe_page.content, 'html.parser')
 
-
 		title = recipe_soup.find('meta', {"property": "og:title"})
 		if title is not None and title["content"] is not None:
-			#print(title["content"].get_text())
 			recipe_dict["title"] = str(title["content"])
 		else:
 			recipe_dict["title"] = ""
 
 		img_div = recipe_soup.find('div', {"class": "recipe-image-and-meta-sidebar__featured-container"})
-		img_container = img_div.find("img", recursive=False) if img_div else None
+		img_container = None
+		if img_div is not None:
+			img_container = img_div.find("img", recursive=False)
 		if img_container is not None and img_container["src"] is not None:
 			recipe_dict["img_src"] = str(img_container["src"])
 		else:
@@ -100,8 +99,8 @@ def find_recipes(speech_text):
 		return_list.append(recipe_dict)
 
 	return_body["recipes"] = return_list
-	# print(return_body)
 	return return_body
+
 
 # find_recipes("chicken parmesan")
 
