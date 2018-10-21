@@ -3,7 +3,7 @@ import speech_analysis
 import database
 from bs4 import BeautifulSoup
 import re
-import FindRecipes as find_rec
+from FindRecipes import findPrice
 from difflib import SequenceMatcher
 
 link = ''
@@ -36,71 +36,71 @@ exists = database.user_inventory()
 # #}
 
 def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
+	return SequenceMatcher(None, a, b).ratio()
 
 def findMatchHelper(a, b):
-    if similar(a, b) > 0.9:
-    	return True
+	if similar(a, b) > 0.9:
+		return True
 
-    for w in a.split(" "):
-    	if w in b:
-    		return True
+	for w in a.split(" "):
+		if w in b:
+			return True
 			
 	for w in b.split(" "):
-    	if w in a:
-    		return True
+		if w in a:
+			return True
 
 	return False
 
 def findMatch(a):
-    for s in pantry:
-    	if findMatchHelper(s, a):
-    		return True
+	for s in exists:
+		if findMatchHelper(s, a):
+			return True
 	return False
 
 def cleanIngredient(ing):
-    ing = ''.join([i for i in ing if not i.isdigit()])
-    words_remove = {
-        'oz':1,
-        'ounce':1,
-        'ounces':1,
-        'teaspoon':1,
-        'teaspoons':1,
-        'tablespoon':1,
-        'tablespoons':1,
-        'cup':1,
-        'cups':1,
-        'pint':1,
-        'pints':1,
-        'cooked':1,
-        'inch':1,
-        'pound':1,
-        'pounds':1,
-        'lb':1,
-        'jar':1,
-        'jars':1,
-        'package':1,
-        'packages':1,
-        'lbs':1,
-        'g':1,
-        'can':1,
-        'tbsp':1,
-        'c':1,
-        'pkg':1,
-        'each':1,
-        'fl':1,
-        'Tbs':1,
-        'tsp':1,
-        'ml':1,
-    }
-    ing = re.sub(r'[^a-zA-Z ]+', '', ing)
-    r = ''
-    for w in ing.split(' '):
-        if w not in words_remove:
-            r += w + ' '
-    ing = r
+	ing = ''.join([i for i in ing if not i.isdigit()])
+	words_remove = {
+		'oz':1,
+		'ounce':1,
+		'ounces':1,
+		'teaspoon':1,
+		'teaspoons':1,
+		'tablespoon':1,
+		'tablespoons':1,
+		'cup':1,
+		'cups':1,
+		'pint':1,
+		'pints':1,
+		'cooked':1,
+		'inch':1,
+		'pound':1,
+		'pounds':1,
+		'lb':1,
+		'jar':1,
+		'jars':1,
+		'package':1,
+		'packages':1,
+		'lbs':1,
+		'g':1,
+		'can':1,
+		'tbsp':1,
+		'c':1,
+		'pkg':1,
+		'each':1,
+		'fl':1,
+		'Tbs':1,
+		'tsp':1,
+		'ml':1,
+	}
+	ing = re.sub(r'[^a-zA-Z ]+', '', ing)
+	r = ''
+	for w in ing.split(' '):
+		if w not in words_remove:
+			r += w + ' '
+	ing = r
 
-    return ing.strip()
+	return ing.strip()
 
 
 def find_recipes(speech_text):
@@ -117,9 +117,9 @@ def get_recipe_info(recipe_list):
 
 	soup = BeautifulSoup(page.content, 'html.parser')
 	recipes = filter(lambda link: link['href'] is not None and
-	                              link['href'].startswith('https://www.tasteofhome.com/recipes/') and
-	                              link['href'].endswith('/'),
-	                 soup.find_all('a', href = True))
+								  link['href'].startswith('https://www.tasteofhome.com/recipes/') and
+								  link['href'].endswith('/'),
+					 soup.find_all('a', href = True))
 
 	recipes_links = set()
 	for r in recipes:
@@ -165,10 +165,10 @@ def get_recipe_info(recipe_list):
 			for i in ingredient_list.findAll('li'):
 				ing = cleanIngredient(str(i.get_text()))
 				if findMatch(ing):
-    				ingredients.append({'name': ing, 'available': True})
+					ingredients.append({'name': ing, 'available': True})
 				else:
 					ingredients.append({'name': ing, 'available': False})
-					cost += find_rec.findPrice(ing)
+					cost += findPrice(ing)
 
 		# ingredients is cleaned
 		print(ingredients)

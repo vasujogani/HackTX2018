@@ -1,4 +1,4 @@
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
 import re
 import requests
 import ingredient_parser as ing_par
@@ -7,7 +7,7 @@ def findPrice(product):
     product_str = '%20'.join(product.split(' '))
     response = requests.get('https://www.walmart.com/search/?query=' + product_str)
     
-    soup = (bs(response.content, 'html.parser'))
+    soup = (BeautifulSoup(response.content, 'html.parser'))
     grps = soup.find_all('span', {'class': 'price-group'})
     
     groups_str = ''
