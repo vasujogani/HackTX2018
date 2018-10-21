@@ -118,12 +118,15 @@ class Ingredients extends Component {
   render() {
     return (
         <Fragment>
-            <input ref={this.input} type="text" placeholder="Enter an ingredient!" />
+            <div className="inputs">
+                <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
+                <h1>or</h1>
+                <input ref={this.input} type="text" placeholder="Enter an ingredient!" />
+            </div>
             <div className="content">
-                <button style={{display: "none"}} ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
                 <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
                 <a style={{display: "none"}} href="#" ref={this.download}>Download</a>
-                <h1 className="ingredients-header">Your Current Ingredients</h1>
+                <h1 style={{marginBottom: "40px"}}className="ingredients-header">Your Current Ingredients</h1>
                 <div className="flex-container">
                     {this.state.ingredients.map((item, index) => {
                         return(<h2 key={index} className="flex-item ingredient" onClick={(e) => {this.deleteItem(e)}}>{item}</h2>);
