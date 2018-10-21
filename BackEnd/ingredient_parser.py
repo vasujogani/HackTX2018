@@ -3,7 +3,7 @@ import speech_analysis
 import database
 from bs4 import BeautifulSoup
 import re
-import FindReceipes as find_rec
+import FindRecipes as find_rec
 from difflib import SequenceMatcher
 
 link = ''
@@ -188,7 +188,7 @@ def get_recipe_info(recipe_list):
 	return return_body
 
 
-find_recipes("chicken parmesan")
+# find_recipes("chicken parmesan")
 
 
 	# for ingred in recipe_dict.values():
