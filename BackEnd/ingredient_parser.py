@@ -32,6 +32,52 @@ link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
 #
 #
 # #}
+
+
+def cleanIngredient(ing):
+    ing = ''.join([i for i in ing if not i.isdigit()])
+    words_remove = {
+        'oz':1,
+        'ounce':1,
+        'ounces':1,
+        'teaspoon':1,
+        'teaspoons':1,
+        'tablespoon':1,
+        'tablespoons':1,
+        'cup':1,
+        'cups':1,
+        'pint':1,
+        'pints':1,
+        'cooked':1,
+        'inch':1,
+        'pound':1,
+        'pounds':1,
+        'lb':1,
+        'jar':1,
+        'jars':1,
+        'package':1,
+        'packages':1,
+        'lbs':1,
+        'g':1,
+        'can':1,
+        'tbsp':1,
+        'c':1,
+        'pkg':1,
+        'each':1,
+        'fl':1,
+        'Tbs':1,
+        'tsp':1,
+        'ml':1,
+    }
+    ing = re.sub(r'[^a-zA-Z ]+', '', ing)
+    r = ''
+    for w in ing.split(' '):
+        if w not in words_remove:
+            r += w + ' '
+    ing = r
+
+    return ing.strip()
+
 def find_recipes(speech_text):
 	# assume speech analysis gives tokenized words list
 	recipe_list = speech_analysis.analyze_text(speech_text)
@@ -87,7 +133,7 @@ def find_recipes(speech_text):
 		ingredients = list()
 		for ingredient_list in recipe_soup.find_all('ul', {"class": "recipe-ingredients__list"}):
 			for i in ingredient_list.findAll('li'):
-				ingredients.append(str(i.get_text()))
+				ingredients.append(cleanIngredient(str(i.get_text())))
 		recipe_dict["ingredients"] = ingredients
 
 		# recipe_dict = {

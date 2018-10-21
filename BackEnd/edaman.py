@@ -32,6 +32,10 @@ def cleanIngredient(ing):
         'c':1,
         'pkg':1,
         'each':1,
+        'fl':1,
+        'Tbs':1,
+        'tsp':1,
+        'ml':1,
     }
     ing = re.sub(r'[^a-zA-Z ]+', '', ing)
     r = ''
@@ -53,11 +57,11 @@ e = Edaman(nutrition_appid='32d74c57',
            recipes_appkey='dcdcda67cd3d123a9cdad0f2c7cda701	')
 
 # print e.search_nutrient("1 large pepporini pizza")
-result = e.search_recipe("chicken bread sauce spinach pasta")
+result = e.search_recipe("bread crumbs mustard chicken breast cheese")
 
 # print(result)
 # for k in result:
-for k in result['Chicken Parmesan With Whole Wheat Pasta']['ingredients']:
+for k in result['Parmesan Chicken Nuggets']['ingredients']:
 #     cautions
     print (cleanIngredient(k))
     # print(k)
