@@ -13,28 +13,6 @@ link_query_conditions = '&st=2&rm=0&vw=1&page=1&rm=2&sort=0'
 # recipe_list get from rev ai
 
 
-# #response = {
-# 	"recipes": [
-# 		{recipe1},
-# 		{recipe2},
-#       {recipe3}
-# 	],
-#
-#   "current_ingredients": [
-#       {curr recipe1},
-#       {curr recipe2},
-#       {curr recipe3},
-#   ]
-#
-#       {curr recipe1},
-#       {curr recipe1},
-#       {curr recipe1},
-#
-#
-#
-# #}
-
-
 def cleanIngredient(ing):
     ing = ''.join([i for i in ing if not i.isdigit()])
     words_remove = {
