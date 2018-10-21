@@ -412,3 +412,18 @@ td.text-right {
     transform: rotate(360deg);
   }
 }
+
+button.custom-recipes{
+  border: 2px solid #1ECD97;
+  color: #1ECD97;
+  font-size: 1.15rem;
+  padding: 20px 30px;
+  width: max-content;
+  height: 60px;
+}
+
+button.custom-recipes:hover{
+  color: white;
+  background: #1ECD97;
+  transform: scale(1.05);
+}

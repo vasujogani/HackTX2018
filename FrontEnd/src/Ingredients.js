@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import './App.css';
-import hark from "hark";
 import firebase from 'firebase';
 
 
@@ -98,6 +97,16 @@ class Ingredients extends Component {
         this.setState({ingredients: this.state.ingredients});
     }
 
+    getCustomRecipes(e){
+        fetch(this.state.apiEndpoint, {
+            method: 'GET'
+        }).then((response) => {return response.json()})
+            .then((data) => {
+                this.props.updateRecipeList(data);
+                this.context.router.history.push('/dashboard');
+            }).catch((error) => console.error('Error:', error));
+    }
+
   render() {
     return (
         <Fragment>
@@ -106,7 +115,7 @@ class Ingredients extends Component {
                 <h1>or</h1>
                 <input ref={this.input} type="text" placeholder="Enter an ingredient!" />
             </div>
-            <div className="content">
+            <div style={{textAlign: "center"}} className="content">
                 <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
                 <h1 style={{marginBottom: "40px"}}className="ingredients-header">Your Current Ingredients</h1>
                 <div className="flex-container">
@@ -114,6 +123,7 @@ class Ingredients extends Component {
                         return(<h2 key={index} className="flex-item ingredient" onClick={(e) => {this.deleteItem(e)}}>{item}</h2>);
                     })}
                 </div>
+                <button className="custom-recipes" onClick={ (e) => {this.getCustomRecipes(e)}}>What can I make with this?</button>
             </div>
         </Fragment>
     );
