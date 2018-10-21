@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component, Fragment} from 'react';
 import './App.css';
 import RecipeCard from "./RecipeCard";
 
@@ -10,9 +10,12 @@ class Dashboard extends Component {
       <div className="tri-flex">
           {(this.props.recipeList ? this.props.recipeList.recipes : JSON.parse(localStorage.getItem('recipeData')).recipes).map( (item, index) => {
               return(
-                  <div key={index} className="tri-item">
-                      <RecipeCard recipe={item}/>
-                  </div>
+                  <Fragment key={index}>
+                      {item.img_src &&
+                      <div className="tri-item">
+                          <RecipeCard recipe={item}/>
+                      </div>}
+                  </Fragment>
               );
           })}
       </div>
