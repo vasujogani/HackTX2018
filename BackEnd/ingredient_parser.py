@@ -79,14 +79,7 @@ def find_recipes(speech_text):
 			recipe_dict["title"] = ""
 
 		img_div = recipe_soup.find('div', {"class": "recipe-image-and-meta-sidebar__featured-container"})
-<<<<<<< HEAD
-		img_container = None
-		if img_div is not None:
-			img_container = img_div.find("img", recursive=False)
-
-=======
 		img_container = img_div.find("img", recursive=False) if img_div else None
->>>>>>> 421b2eb9a4e3ea22899b32c844880b8eb744912c
 		if img_container is not None and img_container["src"] is not None:
 			recipe_dict["img_src"] = str(img_container["src"])
 		else:
