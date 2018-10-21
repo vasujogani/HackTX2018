@@ -16,7 +16,7 @@ class LandingPage extends Component {
     }
 
     componentDidMount(){
-        this.download.current.download = 'audio.mp3';
+        this.download.current.download = 'audio-TEST.mp3';
         // get audio stream from user's mic
         navigator.mediaDevices.getUserMedia({
             audio: true
@@ -79,9 +79,6 @@ class LandingPage extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-            <div className="navbar" />
-        </header>
           <div className="content">
               <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
               <audio id="player" controls ref={this.audioInput}/>
