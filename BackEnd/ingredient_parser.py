@@ -62,7 +62,7 @@ def find_recipes(speech_text):
 		recipe_dict = {}
 
 		recipe_dict['id'] = id
-		return_body['link'] = str(link)
+		recipe_dict['link'] = str(link)
 
 		id += 1
 
