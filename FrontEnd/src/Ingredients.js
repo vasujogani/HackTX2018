@@ -11,7 +11,7 @@ class Ingredients extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: '127.0.0.1:5000/find',
+            apiEndpoint: '127.0.0.1:5000/foodWithPantry',
             stream: null,
             ingredients: [],
             loaded: false,
