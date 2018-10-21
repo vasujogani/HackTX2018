@@ -9,7 +9,7 @@ class LandingPage extends Component {
         this.state = {
             recorder: null,
             recording: false,
-            apiEndpoint: '127.0.0.1/find',
+            apiEndpoint: 'http://127.0.0.1/find',
             stream: null
         };
         this.audioInput = React.createRef();
@@ -73,24 +73,23 @@ class LandingPage extends Component {
     }
 
     sendRequest(blob){
-        let req = new XMLHttpRequest();
         let form = new FormData();
         form.append("speech", blob);
-        req.open("POST", this.state.apiEndpoint, true);
-        req.onload = function (oEvent) {
-            console.log(oEvent);
-        };
-        console.log(form);
-        req.send(form);
+        fetch(this.state.apiEndpoint, {
+            method: 'PUT',
+            body: form
+        }).then((response) => response.json())
+            .catch((error) => console.error('Error:', error))
+            .then((response) => console.log('Success:', JSON.stringify(response)));
     }
 
   render() {
     return (
       <div className="App">
           <div className="content">
-              <button ref={this.button} className={this.state.recording ? "red" : "green"} onClick={() => {this.toggleRecordState()}}/>
-              <audio id="player" controls ref={this.audioInput}/>
-              <a href="#" ref={this.download}>Download</a>
+              <button ref={this.button} className={this.state.recording ? "record red" : "record green"} onClick={() => {this.toggleRecordState()}}/>
+              <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
+              <a style={{display: "none"}} href="#" ref={this.download}>Download</a>
           </div>
       </div>
     );

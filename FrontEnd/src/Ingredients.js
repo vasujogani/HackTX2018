@@ -19,7 +19,6 @@ class Ingredients extends Component {
             db: firebase.firestore()
         };
         this.audioInput = React.createRef();
-        this.download = React.createRef();
         this.button = React.createRef();
         this.input = React.createRef();
     }
@@ -33,7 +32,6 @@ class Ingredients extends Component {
             this.setState({loaded: true});
         });
         this.input.current.onkeyup = (e) => {this.addIngredient(e)};
-        this.download.current.download = 'audio-TEST.mp3';
         // get audio stream from user's mic
         navigator.mediaDevices.getUserMedia({
             audio: true
@@ -71,7 +69,6 @@ class Ingredients extends Component {
         // e.data contains a blob representing the recording
         const blobURL = URL.createObjectURL(e.data);
         audio.src = blobURL;
-        this.download.current.href = blobURL;
         //this.sendRequest(e.data);
         audio.play();
     }
@@ -125,7 +122,6 @@ class Ingredients extends Component {
             </div>
             <div className="content">
                 <audio style={{display: "none"}} id="player" controls ref={this.audioInput}/>
-                <a style={{display: "none"}} href="#" ref={this.download}>Download</a>
                 <h1 style={{marginBottom: "40px"}}className="ingredients-header">Your Current Ingredients</h1>
                 <div className="flex-container">
                     {this.state.ingredients.map((item, index) => {

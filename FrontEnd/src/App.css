@@ -78,7 +78,7 @@ button.red::after{
     box-shadow: 0 0 2px 0 rgba(252, 83, 83, 0.2);
   }
   100% {
-    box-shadow: 0 0 2px 20px rgba(252, 83, 83, 0);
+    box-shadow: 0 0 2px 60px rgba(252, 83, 83, 0);
   }
 }
 
@@ -133,7 +133,9 @@ button.red::after{
 }
 
 .ingredient:hover{
-  box-shadow: 0 2px 10px 3px #16936c;
+  box-shadow: 3px 3px 10px 3px #16936c;
+  top: -1px;
+  left: -1px;
 }
 
 .ingredient::before{
@@ -154,7 +156,7 @@ button.red::after{
   justify-content: center;
   justify-self: center;
   align-items: center;
-  margin: 300px 0 150px 0;
+  margin: 200px 0 150px 0;
 }
 
 .inputs * {
@@ -178,4 +180,17 @@ button.red::after{
   100% {
     box-shadow: 0 0 10px 20px rgba(30, 205, 151, 0);
   }
+}
+
+.record{
+  height: 80vmin;
+  width: 80vmin;
+  position: absolute;
+  top: 4rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  border-radius: 50%;
+  font-size: 5rem;
 }
