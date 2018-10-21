@@ -5,32 +5,28 @@ class RecipeCard extends Component {
 
     constructor(props){
         super(props);
-        if(this.props.recipe){
-            this.state = {
-                title: this.props.recipe.title,
-                img_src: this.props.recipe.img_src,
-                ingredients: this.props.recipe.ingredients
-            }
+        console.log(props)
+        this.state = {
+            title: this.props.recipe.title,
+            img_src: this.props.recipe.img_src,
+            ingredients: this.props.recipe.ingredients,
+            link: this.props.link
         }
     }
 
   render() {
       return (
         <Fragment>
-            <img src={this.state.img_src} />
+            <a href={this.state.link}>
+                <img src={this.state.img_src} />
+            </a>
             <h1>{this.state.title}</h1>
-            <table className="table-fill">
-                <thead>
-                    <tr>
-                        <th className="text-center">Ingredient</th>
-                        <th className="text-center">Do I Have It?</th>
-                    </tr>
-                    </thead>
-                    <tbody className="table-hover">
+            <table style={{marginTop: "60px"}} className="table-fill">
+                <tbody className="table-hover">
                     {this.state.ingredients.map( (item, index) => {
                         return(
                             <tr key={index}>
-                                <td width="180px" className="text-center">{item}</td>
+                                <td width="300px" className="text-center">{item}</td>
                                 <td className="text-center">&#10003;</td>
                             </tr>
                         );
