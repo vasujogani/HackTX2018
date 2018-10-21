@@ -3,7 +3,7 @@ import speech_analysis
 import database
 from bs4 import BeautifulSoup
 import re
-import findPrice from FindRecipes
+import FindRecipes
 from difflib import SequenceMatcher
 
 link = ''
@@ -171,9 +171,8 @@ def get_recipe_info(recipe_list):
 					cost += FindRecipes.findPrice(ing)
 
 		# ingredients is cleaned
-		print(ingredients)
 		recipe_dict["ingredients"] = ingredients
-		recipe_dict["missing_cost"] = cost
+		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
 		
 
 		# recipe_dict = {
