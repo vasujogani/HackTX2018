@@ -21,12 +21,13 @@ docs = db.collection('common_ingredients').get()
 
 doc_ref = db.collection('common_ingredients').document('cumin')
 
-print(doc_ref)
+print(doc_ref.__dict__)
 # try:
 doc = doc_ref.get()
 if doc.to_dict() is not None:
+    print('stupid thing works')
     print(u'Document{} data: {}'.format(doc_ref.id ,doc.to_dict()))
-
+print('step 1')
 # except google.cloud.exceptions.NotFound:
 #     print(u'No such document!')
 
