@@ -3,7 +3,7 @@ import speech_analysis
 import database
 from bs4 import BeautifulSoup
 import re
-from FindRecipes import findPrice
+import FindRecipes
 from difflib import SequenceMatcher
 
 link = ''
@@ -42,11 +42,11 @@ def findMatchHelper(a, b):
 	if similar(a, b) > 0.9:
 		return True
 
-	for w in a.split(" "):
+	for w in a.split(' '):
 		if w in b:
 			return True
 			
-	for w in b.split(" "):
+	for w in b.split(' '):
 		if w in a:
 			return True
 
@@ -171,9 +171,8 @@ def get_recipe_info(recipe_list):
 					cost += findPrice(ing)
 
 		# ingredients is cleaned
-		print(ingredients)
 		recipe_dict["ingredients"] = ingredients
-		recipe_dict["missing_cost"] = cost
+		recipe_dict["missing_cost"] = (int) (cost * 100) / 100
 		
 
 		# recipe_dict = {
